@@ -1,0 +1,173 @@
+TechMart Electronics
+Customer Support Policy & Guidelines
+Effective Date: January 2026 | Version 2.0
+
+================================================================================
+ORDER TRACKING
+================================================================================
+
+How to Track Your Order
+------------------------
+Every order placed on TechMart receives a unique Tracking ID (format: TM-2026-XXXXX).
+You can track your order using any of these methods:
+
+METHOD              DETAILS                         AVAILABILITY
+------------------------------------------------------------------
+Website             Login → My Orders → Track       24/7
+Mobile App          Orders tab → Select order       24/7
+SMS                 Text TRACK <Order ID> to 567890 24/7
+Email               Check order confirmation email  Instant
+WhatsApp            Message +91-9876543210          9 AM - 9 PM
+
+
+Order Status Explained
+----------------------
+ORDER CONFIRMED
+- Payment received, preparing item
+- Expected Timeline: 0-2 hours
+
+PACKED
+- Item packed and ready for pickup
+- Expected Timeline: 2-24 hours
+
+SHIPPED
+- In transit to your location
+- Expected Timeline: 1-5 days
+
+OUT FOR DELIVERY
+- Local delivery in progress
+- Expected Timeline: Same day
+
+DELIVERED
+- Successfully delivered
+
+NOTE: Tracking updates every 2-4 hours. If your order shows "Delayed", 
+you'll receive automatic notifications with updated delivery dates.
+
+
+================================================================================
+RETURN & REFUND POLICY
+================================================================================
+
+Return Window
+-------------
+PRODUCT CATEGORY                    RETURN PERIOD    CONDITION REQUIRED
+------------------------------------------------------------------------
+Electronics (Laptops, Phones)       7 days           Unopened box, all accessories
+Accessories (Chargers, Cases)       14 days          Original packaging
+Smart Home Devices                  10 days          Factory reset, original box
+Damaged/Defective Items             48 hours         As received, with photos
+
+
+How to Initiate a Return
+-------------------------
+Step 1: Login to TechMart → My Orders → Select order → Click "Return"
+Step 2: Select reason (Damaged, Wrong item, Not as described, Changed mind)
+Step 3: Upload photos (mandatory for damage claims)
+Step 4: Choose pickup slot (same day or next day)
+Step 5: Courier pickup at your doorstep (free pickup)
+Step 6: Refund processed within 3-5 business days after quality check
+
+
+Non-Returnable Items
+--------------------
+- Software license keys (activated)
+- Earphones and headphones (opened)
+- Items without original invoice
+- Products damaged by customer misuse
+
+
+================================================================================
+PAYMENT METHODS & SECURITY
+================================================================================
+
+Accepted Payment Methods
+------------------------
+PAYMENT TYPE        OPTIONS                          PROCESSING TIME    EXTRA CHARGES
+-------------------------------------------------------------------------------------
+Credit/Debit Cards  Visa, Mastercard, RuPay, Amex    Instant            No
+UPI                 GPay, PhonePe, Paytm, BHIM        Instant            No
+Net Banking         All major banks                   Instant            No
+Wallets             Paytm, MobiKwik, Amazon Pay       Instant            No
+EMI                 3/6/9/12 months                   Instant            Interest varies
+Cash on Delivery    Pay at delivery                   On delivery        ₹50 fee
+
+
+EMI Options
+-----------
+Available on orders above ₹5,000. No-cost EMI available on select cards:
+
+BANK         3 MONTHS    6 MONTHS    9 MONTHS    12 MONTHS
+-------------------------------------------------------------
+HDFC         No Cost     No Cost     12% PA      13% PA
+ICICI        No Cost     No Cost     12% PA      13% PA
+SBI          11% PA      No Cost     12% PA      13% PA
+Axis         No Cost     11% PA      12% PA      13% PA
+
+
+Payment Security
+----------------
+- All transactions encrypted with 256-bit SSL
+- PCI-DSS Level 1 compliant payment gateway
+- 3D Secure (OTP verification) for all card payments
+- We never store your card CVV or full card number
+- Fraud detection system monitors all transactions
+
+
+================================================================================
+SHIPPING & DELIVERY
+================================================================================
+
+Delivery Timeline
+-----------------
+LOCATION                    STANDARD DELIVERY    EXPRESS DELIVERY    DELIVERY CHARGES
+-------------------------------------------------------------------------------------
+Metro Cities (Mumbai, etc.) 2-3 days             Next day            Free above ₹500
+Tier 1 Cities               3-5 days             2-3 days            Free above ₹500
+Tier 2 Cities               5-7 days             3-4 days            Free above ₹500
+Remote Areas                7-10 days            Not available       ₹100 flat
+
+
+Delivery Partners
+-----------------
+We work with reliable logistics partners: BlueDart, Delhivery, FedEx, and Ekart.
+You'll receive courier partner details and tracking number once order is shipped.
+
+
+Delivery Attempts
+-----------------
+- First attempt: During selected time slot
+- Second attempt: Next business day (automatic)
+- Third attempt: You must reschedule or pickup from hub
+- After 3 failed attempts: Order returned to seller, full refund processed
+
+
+Unboxing at Delivery
+--------------------
+For orders above ₹10,000, you can request to open and inspect the package 
+before accepting delivery. This helps verify the product condition immediately.
+
+
+================================================================================
+CUSTOMER SUPPORT
+================================================================================
+
+Contact Channels
+----------------
+CHANNEL         AVAILABILITY       CONTACT DETAILS              RESPONSE TIME
+-----------------------------------------------------------------------------
+Phone           24/7               1800-123-4567 (Toll-free)    Immediate
+WhatsApp        9 AM - 9 PM        +91-9876543210               < 5 minutes
+Email           24/7               support@techmart.com         < 2 hours
+Live Chat       9 AM - 11 PM       Website/App chat button      < 2 minutes
+Twitter         24/7               @TechMartSupport             < 30 minutes
+
+
+================================================================================
+
+TechMart Electronics Private Limited
+Corporate Office: 123 Tech Park, MG Road, Bangalore - 560001
+CIN: U12345KA2020PTC987654 | GSTIN: 29ABCDE1234F1Z5
+Website: www.techmart.com | Email: info@techmart.com
+
+This policy is subject to change. Please refer to our website for the latest version.

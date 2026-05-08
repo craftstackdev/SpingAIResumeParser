@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HungryCoders - Spring AI Course</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      color: white;
+      margin-bottom: 40px;
+    }
+
+    .header h1 {
+      font-size: 42px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .header p {
+      font-size: 18px;
+      opacity: 0.95;
+    }
+
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .module-card {
+      background: white;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .module-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .module-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+
+    .module-badge.new {
+      background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    }
+
+    .module-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 10px;
+    }
+
+    .module-description {
+      font-size: 14px;
+      color: #64748b;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .module-features {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 16px;
+    }
+
+    .module-features li {
+      font-size: 13px;
+      color: #475569;
+      padding: 6px 0;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .module-features li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #22c55e;
+      font-weight: 700;
+    }
+
+    .module-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 16px;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .module-link {
+      color: #667eea;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .module-status {
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    .footer {
+      text-align: center;
+      color: white;
+      padding: 20px;
+      opacity: 0.9;
+    }
+
+    .footer a {
+      color: white;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>Spring AI Course</h1>
+    <p>Master AI integration with Spring Boot - HungryCoders</p>
+  </div>
+
+  <div class="modules-grid">
+    <!-- Module 1-3: Streaming -->
+    <a href="streaming-chat.html" class="module-card">
+      <div class="module-badge">Modules 1-3</div>
+      <div class="module-title">AI Streaming Chat</div>
+      <div class="module-description">
+        Real-time streaming responses with Server-Sent Events
+      </div>
+      <ul class="module-features">
+        <li>OpenAI & Gemini integration</li>
+        <li>Word-by-word streaming</li>
+        <li>Multi-provider support</li>
+      </ul>
+      <div class="module-footer">
+        <span class="module-link">Launch Demo →</span>
+        <span class="module-status">Active</span>
+      </div>
+    </a>
+
+    <!-- Module 4: Function Calling -->
+    <a href="support-bot.html" class="module-card">
+      <div class="module-badge">Module 4</div>
+      <div class="module-title">AI Support Bot</div>
+      <div class="module-description">
+        Function calling for order management and customer support
+      </div>
+      <ul class="module-features">
+        <li>Order status lookup</li>
+        <li>Refund & cancellation</li>
+        <li>Real-time tool execution</li>
+      </ul>
+      <div class="module-footer">
+        <span class="module-link">Launch Demo →</span>
+        <span class="module-status">Active</span>
+      </div>
+    </a>
+
+    <!-- Module 5: Structured Output -->
+    <a href="ticket-analyzer.html" class="module-card">
+      <div class="module-badge">Module 5</div>
+      <div class="module-title">Ticket Analyzer</div>
+      <div class="module-description">
+        Analyze support tickets with structured JSON output
+      </div>
+      <ul class="module-features">
+        <li>Sentiment analysis</li>
+        <li>Priority classification</li>
+        <li>Response suggestions</li>
+      </ul>
+      <div class="module-footer">
+        <span class="module-link">Launch Demo →</span>
+        <span class="module-status">Active</span>
+      </div>
+    </a>
+
+    <!-- Module 5: Code Review -->
+    <a href="code-review.html" class="module-card">
+      <div class="module-badge">Module 5</div>
+      <div class="module-title">AI Code Reviewer</div>
+      <div class="module-description">
+        Automated code review with structured feedback
+      </div>
+      <ul class="module-features">
+        <li>Code quality analysis</li>
+        <li>Security checks</li>
+        <li>Best practice suggestions</li>
+      </ul>
+      <div class="module-footer">
+        <span class="module-link">Launch Demo →</span>
+        <span class="module-status">Active</span>
+      </div>
+    </a>
+
+    <!-- Module 6: RAG -->
+    <a href="rag-assistant.html" class="module-card">
+      <div class="module-badge">Module 6</div>
+      <div class="module-title">RAG Documentation Assistant</div>
+      <div class="module-description">
+        Vector search with PostgreSQL and pgvector for document Q&A
+      </div>
+      <ul class="module-features">
+        <li>Document upload & indexing</li>
+        <li>Semantic search</li>
+        <li>Context-aware answers</li>
+      </ul>
+      <div class="module-footer">
+        <span class="module-link">Launch Demo →</span>
+        <span class="module-status">Active</span>
+      </div>
+    </a>
+
+    <!-- Module 7: Resume Parser -->
+    <a href="resume-parser.html" class="module-card">
+      <div class="module-badge new">Module 7 - NEW</div>
+      <div class="module-title">AI Resume Parser</div>
+      <div class="module-description">
+        Multi-modal AI with GPT-4 Vision for resume extraction
+      </div>
+      <ul class="module-features">
+        <li>Resume image parsing</li>
+        <li>Job requirement matching</li>
+        <li>Candidate search</li>
+      </ul>
+      <div class="module-footer">
+        <span class="module-link">Launch Demo →</span>
+        <span class="module-status">New</span>
+      </div>
+    </a>
+  </div>
+
+  <div class="footer">
+    <p>Built with Spring AI 1.1.2 | Spring Boot 3.5</p>
+    <p><a href="https://hungrycoders.com" target="_blank">HungryCoders.com</a></p>
+  </div>
+</div>
+</body>
+</html>

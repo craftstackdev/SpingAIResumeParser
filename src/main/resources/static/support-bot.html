@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Support Bot - Function Calling</title>
+  <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .header {
+        text-align: center;
+        color: white;
+        margin-bottom: 30px;
+    }
+
+    .header h1 {
+        font-size: 32px;
+        margin-bottom: 10px;
+    }
+
+    .header p {
+        opacity: 0.9;
+    }
+
+    .mode-switch {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .mode-btn {
+        padding: 10px 20px;
+        background: rgba(255,255,255,0.2);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+    .mode-btn.active {
+        background: white;
+        color: #667eea;
+    }
+
+    .chat-container {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        height: 600px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chat-header {
+        padding: 20px;
+        border-bottom: 2px solid #f0f0f0;
+    }
+
+    .chat-header h2 {
+        color: #333;
+        font-size: 18px;
+    }
+
+    .chat-info {
+        font-size: 12px;
+        color: #666;
+        margin-top: 5px;
+    }
+
+    .chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+    }
+
+    .message {
+        margin-bottom: 15px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .message.user {
+        justify-content: flex-end;
+    }
+
+    .message-content {
+        max-width: 70%;
+        padding: 12px 16px;
+        border-radius: 12px;
+        line-height: 1.5;
+    }
+
+    .message.bot .message-content {
+        background: #f0f0f0;
+        color: #333;
+    }
+
+    .message.user .message-content {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    .message-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        flex-shrink: 0;
+    }
+
+    .message.bot .message-avatar {
+        background: #667eea;
+    }
+
+    .message.user .message-avatar {
+        background: #764ba2;
+    }
+
+    .chat-input-container {
+        padding: 20px;
+        border-top: 2px solid #f0f0f0;
+    }
+
+    .sample-queries {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+    }
+
+    .sample-query {
+        padding: 6px 12px;
+        background: #f0f0f0;
+        border-radius: 16px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .sample-query:hover {
+        background: #667eea;
+        color: white;
+    }
+
+    .input-group {
+        display: flex;
+        gap: 10px;
+    }
+
+    #messageInput {
+        flex: 1;
+        padding: 12px 16px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 14px;
+        font-family: inherit;
+    }
+
+    #messageInput:focus {
+        outline: none;
+        border-color: #667eea;
+    }
+
+    #sendBtn {
+        padding: 12px 24px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    #sendBtn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    #sendBtn:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .typing-indicator {
+        display: none;
+        padding: 12px 16px;
+        background: #f0f0f0;
+        border-radius: 12px;
+        width: 60px;
+    }
+
+    .typing-indicator.show {
+        display: block;
+    }
+
+    .typing-indicator span {
+        height: 8px;
+        width: 8px;
+        background: #999;
+        border-radius: 50%;
+        display: inline-block;
+        margin: 0 2px;
+        animation: bounce 1.4s infinite ease-in-out both;
+    }
+
+    .typing-indicator span:nth-child(1) {
+        animation-delay: -0.32s;
+    }
+
+    .typing-indicator span:nth-child(2) {
+        animation-delay: -0.16s;
+    }
+
+    @keyframes bounce {
+        0%, 80%, 100% {
+            transform: scale(0);
+        }
+        40% {
+            transform: scale(1);
+        }
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #999;
+    }
+
+    .empty-state .icon {
+        font-size: 48px;
+        margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>AI Support Bot (Hungry Coders)</h1>
+    <p>Function Calling Demo - AI can execute actions!</p>
+  </div>
+
+  <div class="mode-switch">
+    <button class="mode-btn active" onclick="switchMode('basic')">
+      Video 1: Basic (Track Orders)
+    </button>
+    <button class="mode-btn" onclick="switchMode('full')">
+      Video 2: Full Support (All Actions)
+    </button>
+  </div>
+
+  <div class="chat-container">
+    <div class="chat-header">
+      <h2 id="chatTitle">Basic Order Tracking</h2>
+      <div class="chat-info" id="chatInfo">
+        AI can call: getOrderStatus()
+      </div>
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+      <div class="empty-state">
+        <div class="icon">💬</div>
+        <p>Ask about your order!</p>
+        <p style="font-size: 14px; margin-top: 10px;">
+          Try: "Where is my order 12345?"
+        </p>
+      </div>
+    </div>
+
+    <div class="chat-input-container">
+      <div class="sample-queries" id="sampleQueries">
+                    <span class="sample-query" onclick="sendSample('Where is my order 12345?')">
+                        📦 Track order 12345
+                    </span>
+        <span class="sample-query" onclick="sendSample('What about order 67890?')">
+                        📦 Check order 67890
+                    </span>
+        <span class="sample-query" onclick="sendSample('When will my order 22222 arrive?')">
+                        ⏰ Delivery estimate
+                    </span>
+      </div>
+
+      <div class="input-group">
+        <input
+                type="text"
+                id="messageInput"
+                placeholder="Ask about your order..."
+                onkeypress="if(event.key==='Enter') sendMessage()"
+        />
+        <button id="sendBtn" onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentMode = 'basic';
+  let conversationHistory = [];
+
+  const modeConfig = {
+      basic: {
+          title: 'Basic Order Tracking',
+          info: 'AI can call: getOrderStatus()',
+          samples: [
+              { text: 'Track order 12345', query: 'Where is my order 12345?' },
+              { text: 'Check order 67890', query: 'What about order 67890?' },
+              { text: 'Delivery estimate', query: 'When will my order 22222 arrive?' }
+          ],
+          endpoint: '/api/support/chat/basic'
+      },
+      full: {
+          title: 'Full Support Bot',
+          info: 'AI can call: getOrderStatus, cancelOrder, initiateReturn, checkRefund',
+          samples: [
+              { text: 'Cancel order 11111', query: 'I want to cancel order 11111' },
+              { text: 'Return order 67890', query: 'I want to return order 67890' },
+              { text: 'Check refund 33333', query: 'What is the refund status for order 33333?' }
+          ],
+          endpoint: '/api/support/chat/full'
+      }
+  };
+
+  function switchMode(mode) {
+      currentMode = mode;
+
+      // Update button states
+      document.querySelectorAll('.mode-btn').forEach(btn => {
+          btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+
+      // Update UI
+      const config = modeConfig[mode];
+      document.getElementById('chatTitle').textContent = config.title;
+      document.getElementById('chatInfo').textContent = config.info;
+
+      // Update sample queries
+      const samplesDiv = document.getElementById('sampleQueries');
+      samplesDiv.innerHTML = config.samples.map(s =>
+          `<span class="sample-query" onclick="sendSample('${s.query}')">${s.text}</span>`
+      ).join('');
+
+      // Clear chat
+      conversationHistory = [];
+      const messagesDiv = document.getElementById('chatMessages');
+      messagesDiv.innerHTML = `
+          <div class="empty-state">
+              <div class="icon">💬</div>
+              <p>Start chatting with the AI support bot!</p>
+          </div>
+      `;
+  }
+
+  function sendSample(query) {
+      document.getElementById('messageInput').value = query;
+      sendMessage();
+  }
+
+  async function sendMessage() {
+      const input = document.getElementById('messageInput');
+      const message = input.value.trim();
+
+      if (!message) return;
+
+      // Add user message to UI
+      addMessage('user', message);
+      input.value = '';
+
+      // Show typing indicator
+      const typingDiv = showTyping();
+
+      // Disable send button
+      const sendBtn = document.getElementById('sendBtn');
+      sendBtn.disabled = true;
+
+      try {
+          const config = modeConfig[currentMode];
+          const response = await fetch(`${config.endpoint}?provider=openai&model=gpt-4o`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ message: message })
+          });
+
+          const data = await response.json();
+
+          // Remove typing indicator
+          typingDiv.remove();
+
+          if (data.success) {
+              addMessage('bot', data.response);
+          } else {
+              addMessage('bot', '❌ Error: ' + data.error);
+          }
+
+      } catch (error) {
+          typingDiv.remove();
+          addMessage('bot', '❌ Failed to connect to server. Make sure backend is running!');
+      } finally {
+          sendBtn.disabled = false;
+          input.focus();
+      }
+  }
+
+  function addMessage(sender, text) {
+      const messagesDiv = document.getElementById('chatMessages');
+
+      // Remove empty state if exists
+      const emptyState = messagesDiv.querySelector('.empty-state');
+      if (emptyState) {
+          emptyState.remove();
+      }
+
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${sender}`;
+
+      const avatar = sender === 'bot' ? '🤖' : '👤';
+
+      messageDiv.innerHTML = `
+          ${sender === 'bot' ? `<div class="message-avatar">${avatar}</div>` : ''}
+          <div class="message-content">${text}</div>
+          ${sender === 'user' ? `<div class="message-avatar">${avatar}</div>` : ''}
+      `;
+
+      messagesDiv.appendChild(messageDiv);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  }
+
+  function showTyping() {
+      const messagesDiv = document.getElementById('chatMessages');
+      const typingDiv = document.createElement('div');
+      typingDiv.className = 'message bot';
+      typingDiv.innerHTML = `
+          <div class="message-avatar">🤖</div>
+          <div class="typing-indicator show">
+              <span></span>
+              <span></span>
+              <span></span>
+          </div>
+      `;
+      messagesDiv.appendChild(typingDiv);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      return typingDiv;
+  }
+</script>
+</body>
+</html>

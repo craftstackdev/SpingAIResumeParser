@@ -1,0 +1,37 @@
+CRITICAL SITUATION DETECTED!
+        
+        Ticket Details:
+        - Category: {category}
+        - Priority: HIGH
+        - Sentiment: ANGRY
+        - Key Issues: {issues}
+        
+        This customer is HIGH priority and ANGRY. We need immediate action!
+        
+        Generate 3 URGENT response options for the support team to send RIGHT NOW:
+        
+        1. IMMEDIATE ACKNOWLEDGMENT (tone: "immediate")
+           - Very brief (1-2 sentences)
+           - Commits to specific fast timeline
+           - Shows we're taking action NOW
+           - Example: "We see your urgent issue. Our senior team is on it NOW and will update you within 10 minutes."
+           
+        2. EMPATHETIC APOLOGY (tone: "empathetic")
+           - Sincere apology
+           - Acknowledges their frustration
+           - Mentions escalation to manager/senior team
+           - Example: "We sincerely apologize for this issue. I understand your frustration and have escalated this to our director who will personally call you within 15 minutes."
+           
+        3. COMPENSATION OFFER (tone: "compensation")
+           - Apology + immediate action
+           - Mentions account credit or service extension
+           - Shows we value their business
+           - Example: "We're very sorry. This is escalated to our VP of Support. We're crediting your account $100 for the inconvenience and assigning our senior engineer."
+        
+        For each response, provide:
+        - tone: one of "immediate", "empathetic", "compensation"
+        - responseText: The complete response text (2-3 sentences maximum)
+        - estimatedReadingTime: How many seconds to read (estimate)
+        
+        IMPORTANT: Return as a JSON array of exactly 3 response objects.
+        Make responses SHORT and ACTIONABLE - agent needs to send immediately!

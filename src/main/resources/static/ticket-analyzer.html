@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Support Ticket Analyzer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .panel {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .panel h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel h2::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+            font-size: 14px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            min-height: 200px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .sample-tickets {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .sample-ticket {
+            padding: 8px 12px;
+            background: #f0f0f0;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .sample-ticket:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results-container {
+            min-height: 400px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .analysis-result {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .analysis-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .priority-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: white;
+            font-size: 14px;
+        }
+
+        .sentiment {
+            font-size: 32px;
+        }
+
+        .analysis-field {
+            margin-bottom: 15px;
+            padding: 12px;
+            background: white;
+            border-radius: 6px;
+        }
+
+        .field-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .field-value {
+            font-size: 15px;
+            color: #333;
+        }
+
+        .team-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #667eea;
+            color: white;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .time-estimate {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .summary-box {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>AI Support Ticket Analyzer (Hungry Coders)</h1>
+        <p>Automatically classify and route support tickets using AI</p>
+    </div>
+
+    <div class="main-content">
+        <!-- Left Panel: Input -->
+        <div class="panel">
+            <h2>Submit Support Ticket</h2>
+
+            <div class="form-group">
+                <label for="ticketText">Ticket Content</label>
+
+                <div class="sample-tickets">
+                    <span class="sample-ticket" onclick="loadSample(1)">Password Reset</span>
+                    <span class="sample-ticket" onclick="loadSample(2)">Production Down</span>
+                    <span class="sample-ticket" onclick="loadSample(3)">Feature Request</span>
+                    <span class="sample-ticket" onclick="loadSample(4)">Billing Issue</span>
+                </div>
+
+                <textarea id="ticketText" placeholder="Subject: Unable to access my account
+
+Hi Support Team,
+
+I've been trying to log into my account for the past 2 hours but keep getting an error message saying 'Invalid credentials'. I'm sure my password is correct as I haven't changed it recently.
+
+This is urgent as I need to access important documents for a client meeting tomorrow morning.
+
+Can you please help me resolve this ASAP?
+
+Thanks,
+John Doe"></textarea>
+            </div>
+
+            <button id="analyzeBtn" onclick="analyzeTicket()">
+                Analyze Ticket
+            </button>
+        </div>
+
+        <!-- Right Panel: Results -->
+        <div class="panel">
+            <h2>Analysis Results</h2>
+
+            <div class="results-container" id="results">
+                <div class="empty-state">
+                    <div class="icon"></div>
+                    <p>Submit a ticket to see AI-powered analysis</p>
+                    <p style="margin-top: 10px; font-size: 14px;">
+                        AI will classify priority, sentiment, and route to the right team
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const samples = {
+        1: {
+            text: `Subject: Password Reset Request
+
+Hi,
+
+I forgot my password and need to reset it. I tried the 'forgot password' link but I'm not receiving the reset email.
+
+My email is john.doe@company.com
+
+Can you help?
+
+Thanks`
+        },
+        2: {
+            text: `Subject: URGENT - Production Server Down!!!
+
+Our main production server has crashed and our entire application is down. Customers are unable to access the platform and we're losing revenue every minute.
+
+This started 15 minutes ago and we can't figure out what's wrong. The error logs show database connection failures.
+
+PLEASE HELP IMMEDIATELY! This is costing us thousands of dollars per hour!
+
+Call me at: +91-111111`
+        },
+        3: {
+            text: `Subject: Feature Suggestion - Dark Mode
+
+Hello,
+
+I love your product and use it daily. One feature that would really improve the experience is a dark mode option for the dashboard.
+
+Many users work late at night and a dark theme would be much easier on the eyes. I've seen several other users requesting this in the community forum as well.
+
+Would you consider adding this in a future update?
+
+Thank you!`
+        },
+        4: {
+            text: `Subject: Incorrect Billing Amount
+
+Hi Billing Team,
+
+I was charged $299 this month but my plan should be $199. I checked my subscription and it still shows the Basic plan, not the Premium plan.
+
+This is the second time this has happened. Last month I had to get a refund manually which took 2 weeks.
+
+Please correct this billing error and refund the $100 difference.
+
+Account ID: ACC-12345
+Invoice: INV-67890
+
+Thanks`
+        }
+    };
+
+    function loadSample(num) {
+        document.getElementById('ticketText').value = samples[num].text;
+    }
+
+    async function analyzeTicket() {
+        const ticketText = document.getElementById('ticketText').value.trim();
+        const resultsDiv = document.getElementById('results');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+
+        if (!ticketText) {
+            alert('Please enter ticket text!');
+            return;
+        }
+
+        // Disable button and show loading
+        analyzeBtn.disabled = true;
+        analyzeBtn.textContent = '⏳ Analyzing...';
+
+        resultsDiv.innerHTML = `
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>AI is analyzing the ticket...</p>
+                <p style="font-size: 14px; color: #999; margin-top: 10px;">
+                    Extracting: priority, sentiment, category, team assignment
+                </p>
+            </div>
+        `;
+
+        try {
+            const response = await fetch('/api/tickets/analyze?provider=openai', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    ticketText: ticketText
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                displayAnalysis(data);
+            } else {
+                showError(data.error || 'Failed to analyze ticket');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showError('Failed to connect to server. Make sure backend is running!');
+        } finally {
+            analyzeBtn.disabled = false;
+            analyzeBtn.textContent = '🔍 Analyze Ticket';
+        }
+    }
+
+    function displayAnalysis(data) {
+    const analysis = data.analysis;
+    const resultsDiv = document.getElementById('results');
+
+    // Basic analysis display
+    let html = `
+        <div class="analysis-result">
+            <div class="analysis-header">
+                <div class="priority-badge" style="background-color: ${data.priorityColor}">
+                    ${analysis.priority} PRIORITY
+                </div>
+                <div class="sentiment" title="${analysis.sentiment}">
+                    ${data.sentimentEmoji}
+                </div>
+            </div>
+
+            <div class="analysis-field">
+                <div class="field-label">Category</div>
+                <div class="field-value">${analysis.category} → ${analysis.subcategory}</div>
+            </div>
+
+            <div class="analysis-field">
+                <div class="field-label">Assigned Team</div>
+                <div class="field-value">
+                    <span class="team-badge">${analysis.suggestedTeam}</span>
+                </div>
+            </div>
+
+            <div class="analysis-field">
+                <div class="field-label">Estimated Resolution Time</div>
+                <div class="field-value">
+                    <span class="time-estimate">
+                         ${analysis.estimatedResolutionMinutes} minutes
+                    </span>
+                </div>
+            </div>
+
+            <div class="analysis-field">
+                <div class="field-label">Customer Sentiment</div>
+                <div class="field-value">${analysis.sentiment}</div>
+            </div>
+
+            <div class="analysis-field">
+                <div class="field-label">Key Issues Identified</div>
+                <div class="field-value">${analysis.keyIssues}</div>
+            </div>
+
+            <div class="summary-box">
+                <div class="field-label">Summary</div>
+                <div class="field-value">${analysis.summary}</div>
+            </div>
+        </div>
+    `;
+
+    // Check if urgent responses exist (critical situation)
+    if (data.responses && data.responses.length > 0) {
+        html += `
+            <div style="background: #fff3cd; border: 3px solid #ffc107;
+                        border-radius: 12px; padding: 25px; margin-top: 20px;">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+
+                    <h3 style="color: #856404; margin: 0;">
+                        CRITICAL SITUATION DETECTED!
+                    </h3>
+                </div>
+
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #dc3545;">
+                    <strong style="color: #dc3545;">Alert:</strong>
+                    <span style="color: #721c24;">
+                        HIGH priority + ANGRY customer = Immediate escalation required!
+                    </span>
+                </div>
+
+                <h4 style="color: #856404; margin-bottom: 15px;">
+                    URGENT Response Options (Send Immediately):
+                </h4>
+
+                ${data.responses.map((response, index) => `
+                    <div style="background: white; padding: 18px; margin-bottom: 12px;
+                                border-left: 4px solid #dc3545; border-radius: 8px;
+                                box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <div style="font-weight: bold; color: #dc3545; font-size: 16px;">
+                                ${index + 1}. ${formatTone(response.tone)}
+                            </div>
+                            <div style="font-size: 12px; color: #999;">
+                                 ${response.estimatedReadingTime}s read
+                            </div>
+                        </div>
+                        <div style="color: #333; line-height: 1.6; margin-bottom: 12px;
+                                    padding: 12px; background: #f8f9fa; border-radius: 6px;">
+                            "${response.responseText}"
+                        </div>
+                        <button onclick="copyResponse(\`${response.responseText.replace(/`/g, '\\`')}\`)"
+                                style="padding: 10px 20px; background: #28a745; color: white;
+                                       border: none; border-radius: 6px; cursor: pointer;
+                                       font-weight: 600; transition: all 0.3s;">
+                             Copy & Send Now
+                        </button>
+                    </div>
+                `).join('')}
+
+                <div style="background: #d1ecf1; padding: 15px; border-radius: 8px;
+                            margin-top: 20px; border-left: 4px solid #0c5460;">
+                    <strong style="color: #0c5460;"> Auto-Escalation Actions Taken:</strong>
+                    <ul style="margin: 10px 0 0 20px; color: #0c5460; line-height: 1.8;">
+                        <li>Manager notification sent via Slack</li>
+                        <li>Senior support engineer auto-assigned</li>
+                        <li>SLA timer started: ${analysis.estimatedResolutionMinutes} minute countdown</li>
+                        <li>Customer flagged for VIP priority handling</li>
+                    </ul>
+                </div>
+            </div>
+        `;
+    }
+
+    resultsDiv.innerHTML = html;
+}
+
+function formatTone(tone) {
+    const toneMap = {
+        'immediate': 'IMMEDIATE ACKNOWLEDGMENT',
+        'empathetic': 'EMPATHETIC APOLOGY',
+        'compensation': 'COMPENSATION OFFER'
+    };
+    return toneMap[tone] || tone.toUpperCase();
+}
+
+function copyResponse(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        alert(' Response copied to clipboard!\n\nSend this to the customer NOW to de-escalate the situation.');
+    }).catch(err => {
+        console.error('Failed to copy:', err);
+        alert('Failed to copy. Please copy manually.');
+    });
+}
+
+    function showError(message) {
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.innerHTML = `
+            <div style="background: #fff5f5; border: 2px solid #dc3545; border-radius: 8px; padding: 20px; color: #dc3545;">
+                <strong> Error:</strong> ${message}
+            </div>
+        `;
+    }
+</script>
+</body>
+</html>
